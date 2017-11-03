@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[ ]:
+# In[1]:
 
 import tensorflow as tf
 
@@ -137,7 +137,7 @@ class CapsNet(object):
         # 2. The reconstruction loss
         orgin = tf.reshape(self.X, shape=(cfg.batch_size, -1))
         squared = tf.square(self.decoded - orgin)
-        self.reconstruction_err = tf.reduce_mean(squared)
+        self.reconstruction_err = tf.reduce_mean(tf.reduce_sum(squared, axis=-1))
 
         # 3. Total loss
         self.total_loss = self.margin_loss + 0.0005 * self.reconstruction_err
@@ -153,7 +153,7 @@ class CapsNet(object):
         self.summary_train = tf.summary.merge(summary_train)
 
 
-# In[ ]:
+# In[2]:
 
 
 capsNet = CapsNet(is_training=cfg.is_training)
@@ -185,7 +185,7 @@ with sv.managed_session() as sess:
                     cor_num = sess.run(capsNet.correct_num, feed_dict={capsNet.X:teX[start:end], capsNet.Y_label:teY[start:end]})
                     cor_all += cor_num
                 test_acc = cor_all/10000
-                print "Test Acc on %f epoch %d/%d "%(test_acc, step, num_batch)
+                print "Test Acc on %f epoch %d %d/%d "%(test_acc, epoch, step, num_batch)
                 summary_test_acc = sess.run(capsNet.summary_test_acc, feed_dict={capsNet.test_acc:test_acc})
                 sv.summary_writer.add_summary(summary_test_acc, global_step=global_step)
         sv.saver.save(sess, cfg.logdir + '/model_epoch_%04d_step_%02d' % (epoch, global_step))
@@ -193,7 +193,7 @@ with sv.managed_session() as sess:
 tf.logging.info('Training done')
 
 
-# In[ ]:
+# In[3]:
 
 
 
