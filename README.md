@@ -1,5 +1,7 @@
 # Capsnet-tensorflow-combine
 
+## this code is revised from
+https://github.com/naturomics/CapsNet-Tensorflow
 
 
 *Download dataset*
