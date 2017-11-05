@@ -41,6 +41,7 @@ def get_batch_data():
     trX, trY = load_mnist(cfg.dataset, cfg.is_training)
 
     data_queues = tf.train.slice_input_producer([trX, trY])
+    data_queues[0] = tf.random_crop(tf.image.pad_to_bounding_box(data_queues[0], 2, 2, 32, 32), [28, 28, 1])
     X, Y = tf.train.shuffle_batch(data_queues, num_threads=cfg.num_threads,
                                   batch_size=cfg.batch_size,
                                   capacity=cfg.batch_size * 64,
