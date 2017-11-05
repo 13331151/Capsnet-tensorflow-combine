@@ -18,5 +18,5 @@ $ gunzip data/mnist/*.gz
 $ python train_eval.py
 ```
 
-*Test Accurcay: 99.43% at 40K times as the paper's*
+*Test Accurcay(with translation augmentation): 99.62%*
 ![test_cc](code/test_acc.png)
